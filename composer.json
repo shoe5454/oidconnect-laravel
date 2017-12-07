@@ -1,16 +1,16 @@
 {
-    "name": "furdarius/oidconnect-laravel",
-    "description": "Open ID Connect client library for Laravel Framework",
+    "name": "muffycompo/oidconnect-laravel",
+    "description": "OpenID Connect client library for Laravel Framework",
     "license": "MIT",
     "keywords": ["openidconnect", "oauth", "laravel"],
     "authors": [
         {
-            "name": "Artemiy Ryabinkov",
-            "email": "getlag@ya.ru"
-        },
-        {
             "name": "Mfawa Alfred Onen",
             "email": "muffycompoqm@gmail.com"
+        },
+        {
+            "name": "Artemiy Ryabinkov",
+            "email": "getlag@ya.ru"
         }
     ],
     "require": {
@@ -24,6 +24,5 @@
             "Furdarius\\OIDConnect\\": "src/"
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

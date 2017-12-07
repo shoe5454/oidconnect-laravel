@@ -75,7 +75,7 @@ protected $routeMiddleware = [
 
 And then use it as usual:
 ```php
-Route::middleware('token')->get('/protected', function (Illuminate\Http\Request $request) {
+Route::middleware('token')->get('/protected-resource', function (Illuminate\Http\Request $request) {
     return "You are on protected zone";
 });
 ```

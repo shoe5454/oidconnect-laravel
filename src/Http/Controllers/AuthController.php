@@ -50,6 +50,7 @@ class AuthController extends BaseController
         }
 
         return $this->responseJson([
+            'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'token' => $user->token,
