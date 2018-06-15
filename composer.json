@@ -1,5 +1,5 @@
 {
-    "name": "muffycompo/oidconnect-laravel",
+    "name": "pimbutton/oidconnect-laravel",
     "description": "OpenID Connect client library for Laravel Framework",
     "license": "MIT",
     "keywords": ["openidconnect", "oauth", "laravel"],
@@ -11,11 +11,15 @@
         {
             "name": "Artemiy Ryabinkov",
             "email": "getlag@ya.ru"
+        },
+        {
+            "name": "Pim Knops",
+            "email": "pim@studiotast.com"
         }
     ],
     "require": {
         "laravel/socialite": "^3.0",
-        "lcobucci/jwt": "dev-master",
+        "lcobucci/jwt": "^3.2",
         "illuminate/database": "^5.5",
         "illuminate/routing": "^5.5"
     },
