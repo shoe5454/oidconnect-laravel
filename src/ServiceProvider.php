@@ -79,11 +79,11 @@ class ServiceProvider extends ServiceProviderIlluminate
         });
 
         $this->app->singleton(Decoder::class, function ($app) {
-            return new JsonDecoder();
+            return new \Lcobucci\JWT\Parsing\Decoder();
         });
 
         $this->app->singleton(Parser::class, function ($app) {
-            return new Token\Parser($app[Decoder::class]);
+            return new \Lcobucci\JWT\Parser($app[Decoder::class]);
         });
 
         $this->app->singleton(Validator::class, function ($app) {

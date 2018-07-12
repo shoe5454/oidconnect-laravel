@@ -19,10 +19,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
      * @var array
      */
     protected $scopes = [
-        'openid',
-        'email',
-        'profile',
-        'offline_access',
+        'openid'
     ];
 
     /**
@@ -107,7 +104,8 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
             'id' => $user['sub'],
             'sub' => $user['sub'],
             'iss' => $user['iss'],
-            'nickname' => $user['name'],
+            'first_name' => $user['given_name'],
+            'last_name' => $user['family_name'],
             'name' => $user['name'],
             'email' => $user['email'],
         ]);
@@ -126,14 +124,20 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
          */
         $plainToken = $this->parser->parse($token);
 
-        $claims = $plainToken->claims();
+        $client = new \GuzzleHttp\Client(['base_uri' => 'https://oidc.test.surfconext.nl']);
 
-        return [
-            'sub' => $claims->get('sub'),
-            'iss' => $claims->get('iss'),
-            'name' => $claims->get('name'),
-            'email' => $claims->get('email'),
-        ];
+        $res = $client->request('GET', '/userinfo', [
+            'allow_redirects' => true,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token
+            ]
+        ]);
+        $userData = json_decode($res->getBody(), true);
+
+        $userData['iss'] = $plainToken->getClaim('iss');
+        // 302
+
+        return $userData;
     }
 
     /**
