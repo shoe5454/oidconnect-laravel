@@ -1,5 +1,5 @@
 {
-    "name": "pimbutton/oidconnect-laravel",
+    "name": "mjollnir/oidconnect-laravel",
     "description": "OpenID Connect client library for Laravel Framework",
     "license": "MIT",
     "keywords": ["openidconnect", "oauth", "laravel"],
