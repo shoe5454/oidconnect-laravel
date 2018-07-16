@@ -8,7 +8,6 @@ use Illuminate\Support\Arr;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\ProviderInterface;
-use Laravel\Socialite\Two\User;
 use Lcobucci\JWT\Parser;
 
 class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderInterface
@@ -108,6 +107,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
             'iss' => $user['iss'],
             'name' => $user['name'],
             'email' => $user['email'],
+            'role' => $user['role'],
         ]);
     }
 
@@ -131,6 +131,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
             'iss' => $claims['iss'],
             'name' => $claims['name'],
             'email' => $claims['email'],
+            'role' => $claims['role'],
         ];
     }
 
