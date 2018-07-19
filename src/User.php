@@ -13,8 +13,13 @@ use Laravel\Socialite\Two\User as BaseUser;
 class User extends BaseUser
 {
     public $role;
+    public $permission;
 
     public function getRole(){
         return $this->role;
+    }
+
+    public function getPermission(){
+        return $this->permission;
     }
 }
