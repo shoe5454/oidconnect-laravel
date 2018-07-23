@@ -12,8 +12,19 @@ use Laravel\Socialite\Two\User as BaseUser;
 
 class User extends BaseUser
 {
+    public $accessToken;
     public $role;
     public $permission;
+
+    public function setAccessToken($token){
+        $this->accessToken = $token;
+
+        return $this;
+    }
+
+    public function getAccessToken(){
+        return $this->accessToken;
+    }
 
     public function getRole(){
         return $this->role;

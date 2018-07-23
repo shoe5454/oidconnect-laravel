@@ -7,5 +7,6 @@ return [
     'auth' => 'https://opidc.provider/auth',
     'token' => 'https://opidc.provider/token',
     'keys' => 'https://opidc.provider/keys',
+    'scopes' => [],
     'guzzle' => [],
 ];

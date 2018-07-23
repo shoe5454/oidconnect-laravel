@@ -49,7 +49,8 @@ class ServiceProvider extends ServiceProviderIlluminate
                     $config['client_secret'],
                     $config['redirect'],
                     $config['auth'],
-                    $config['token']
+                    $config['token'],
+                    $config['scopes']
                 );
             }
         );

@@ -63,13 +63,15 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
         string $clientSecret,
         string $redirectUrl,
         string $authUrl,
-        string $tokenUrl
+        string $tokenUrl,
+        array $scopes
     ) {
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
 
         $this->parser = $parser;
         $this->authUrl = $authUrl;
         $this->tokenUrl = $tokenUrl;
+        $this->scopes = array_merge($this->scopes, $scopes);
     }
 
     /**
@@ -92,6 +94,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
         $user = $this->mapUserToObject($this->getUserByToken($token));
 
         return $user->setToken($token)
+            ->setAccessToken(Arr::get($response, 'access_token'))
             ->setRefreshToken(Arr::get($response, 'refresh_token'))
             ->setExpiresIn(Arr::get($response, 'expires_in'));
     }
