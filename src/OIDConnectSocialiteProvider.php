@@ -159,7 +159,11 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase($this->authUrl, $state);
+        return $this->with([
+            'response_type' => 'code id_token',
+            'response_mode' => 'form_post',
+            'nonce' => md5(time()),
+        ])->buildAuthUrlFromBase($this->authUrl, $state);
     }
 
     /**
