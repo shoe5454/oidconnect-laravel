@@ -128,15 +128,15 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
          */
         $plainToken = $this->parser->parse($token);
 
-        $claims = $plainToken->getClaims();
+        $claims = $plainToken->claims();
 
         return [
-            'sub' => $claims['sub'],
-            'iss' => $claims['iss'],
-            'name' => $claims['name'],
-            'email' => $claims['email'],
-            'role' => $claims['role'] ?? [],
-            'permission' => $claims['permission'] ?? [],
+            'sub' => $claims->get('sub'),
+            'iss' => $claims->get('iss'),
+            'name' => $claims->get('name'),
+            'email' => $claims->get('email'),
+            'role' => $claims->get('role'),
+            'permission' => $claims->get('permission'),
         ];
     }
 
