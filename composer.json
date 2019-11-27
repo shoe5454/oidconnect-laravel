@@ -19,7 +19,7 @@
     ],
     "repositories": [{
         "type": "vcs",
-        "url": "http://github.com/ivarsju/jwt"
+        "url": "https://github.com/ivarsju/jwt"
     }],
     "require": {
         "laravel/socialite": ">=3.0",
