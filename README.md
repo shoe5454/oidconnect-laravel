@@ -59,6 +59,13 @@ return [
 ```
 
 #### Endpoints
+Define redirect, callback and refresh routes:
+```
+Route::get('/auth/redirect', '\Furdarius\OIDConnect\Http\Controllers\AuthController@redirect');
+Route::get('/auth/callback', '\Furdarius\OIDConnect\Http\Controllers\AuthController@callback');
+Route::post('/auth/refresh', '\Furdarius\OIDConnect\Http\Controllers\AuthController@refresh');
+```
+
 Now, your app has auth endpoints:
 * `GET /auth/redirect` - Used to redirect client to Auth Service login page.
 * `GET /auth/callback` - Used when Auth Service redirect client to callback url with code.
