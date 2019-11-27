@@ -135,8 +135,8 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
             'iss' => $claims['iss'],
             'name' => $claims['name'],
             'email' => $claims['email'],
-            'role' => $claims['role'],
-            'permission' => $claims['permission'],
+            'role' => $claims['role'] ?? [],
+            'permission' => $claims['permission'] ?? [],
         ];
     }
 
@@ -160,7 +160,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
     protected function getAuthUrl($state)
     {
         return $this->with([
-            'response_type' => 'code id_token',
+            'response_type' => config('opidconnect.response_type', 'code id_token'),
             'response_mode' => 'form_post',
             'nonce' => md5(time()),
         ])->buildAuthUrlFromBase($this->authUrl, $state);
