@@ -9,4 +9,5 @@ return [
     'keys' => 'https://opidc.provider/keys',
     'scopes' => [],
     'guzzle' => [],
+    'response_type' => 'code id_token',
 ];
