@@ -17,6 +17,10 @@
             "email": "pim@studiotast.com"
         }
     ],
+    "repositories": [{
+        "type": "vcs",
+        "url": "http://github.com/ivarsju/jwt"
+    }],
     "require": {
         "laravel/socialite": ">=3.0",
         "lcobucci/jose-parsing": "~2.1",
