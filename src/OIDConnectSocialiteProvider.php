@@ -46,6 +46,11 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
     private $tokenUrl;
 
     /**
+     * @var string
+     */
+    private $responseType = 'code id_token';
+
+    /**
      * Create a new provider instance.
      *
      * @param  \Illuminate\Http\Request $request
@@ -55,6 +60,8 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
      * @param  string                   $redirectUrl
      * @param  string                   $authUrl
      * @param  string                   $tokenUrl
+     * @param  array                    $scopes
+     * @param  string                   $responseType
      */
     public function __construct(
         Request $request,
@@ -64,7 +71,8 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
         string $redirectUrl,
         string $authUrl,
         string $tokenUrl,
-        array $scopes
+        array $scopes,
+        string $responseType = null
     ) {
         parent::__construct($request, $clientId, $clientSecret, $redirectUrl);
 
@@ -72,6 +80,9 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
         $this->authUrl = $authUrl;
         $this->tokenUrl = $tokenUrl;
         $this->scopes = array_merge($this->scopes, $scopes);
+        if ($responseType) {
+            $this->responseType = $responseType;
+        }
     }
 
     /**
@@ -160,7 +171,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
     protected function getAuthUrl($state)
     {
         return $this->with([
-            'response_type' => config('opidconnect.response_type', 'code id_token'),
+            'response_type' => $this->responseType,
             'response_mode' => 'form_post',
             'nonce' => md5(time()),
         ])->buildAuthUrlFromBase($this->authUrl, $state);
