@@ -18,10 +18,10 @@ class AuthController extends BaseController
      *
      * @return RedirectResponse
      */
-    public function redirect()
+    public function redirect(string $driver)
     {
         /** @var \Symfony\Component\HttpFoundation\RedirectResponse $redirectResponse */
-        $redirectResponse = \Socialite::with('myoidc')->stateless()->redirect();
+        $redirectResponse = \Socialite::with($driver)->stateless()->redirect();
 
         return $redirectResponse;
     }
@@ -32,7 +32,7 @@ class AuthController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function callback(Request $request, TokenStorage $storage)
+    public function callback(Request $request, string $driver, TokenStorage $storage)
     {
         // TODO: handle CORS more elegant way
         if ($request->getMethod() === 'OPTIONS') {
@@ -43,7 +43,7 @@ class AuthController extends BaseController
         }
 
         /** @var \Laravel\Socialite\Two\User $user */
-        $user = \Socialite::with('myoidc')->stateless()->user();
+        $user = \Socialite::with($driver)->stateless()->user();
 
         if (!$storage->saveRefresh($user['sub'], $user['iss'], $user->refreshToken)) {
             throw new TokenStorageException("Failed to save refresh token");
@@ -78,7 +78,7 @@ class AuthController extends BaseController
      *
      * @return AuthenticationException|JsonResponse
      */
-    public function refresh(Request $request, TokenRefresher $refresher, Parser $parser)
+    public function refresh(Request $request, string $driver, TokenRefresher $refresher, Parser $parser)
     {
         $data = $request->json()->all();
 
