@@ -7,6 +7,7 @@ use Furdarius\OIDConnect\Adapter\NullAuthenticatorAdapter;
 use Furdarius\OIDConnect\Contract\Authenticator;
 use Furdarius\OIDConnect\Contract\JSONGetter;
 use Furdarius\OIDConnect\Contract\JSONPoster;
+use Furdarius\OIDConnect\Exception\TokenRequestException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider as ServiceProviderIlluminate;
@@ -35,25 +36,32 @@ class ServiceProvider extends ServiceProviderIlluminate
         $this->loadMigrationsFrom(realpath(__DIR__ . '/../migrations'));
         $this->loadRoutesFrom(realpath(__DIR__ . '/Http/routes.php'));
 
+        $configs = config('opidconnect');
+
+        if (!$configs = config('opidconnect')) {
+            return;
+        }
+
         $socialite = $this->app->make(SocialiteFactory::class);
 
-        $socialite->extend(
-            'myoidc',
-            function ($app) use ($socialite) {
-                $config = $app['config']['opidconnect'];
-
-                return new OIDConnectSocialiteProvider(
-                    $app[Request::class],
-                    $app[Parser::class],
-                    $config['client_id'],
-                    $config['client_secret'],
-                    $config['redirect'],
-                    $config['auth'],
-                    $config['token'],
-                    $config['scopes']
-                );
-            }
-        );
+        foreach ($configs as $driver => $config) {
+            $socialite->extend(
+                $driver,
+                function ($app) use ($socialite, $config) {
+                    return new OIDConnectSocialiteProvider(
+                        $app[Request::class],
+                        $app[Parser::class],
+                        $config['client_id'],
+                        $config['client_secret'],
+                        $config['redirect'],
+                        $config['auth'],
+                        $config['token'],
+                        $config['scopes'],
+                        $config['response_type']
+                    );
+                }
+            );
+        }
     }
 
     /**
@@ -63,28 +71,18 @@ class ServiceProvider extends ServiceProviderIlluminate
      */
     public function register()
     {
-        $this->app->singleton(JSONFetcherAdapter::class, function ($app) {
-            $config = $app['config']['opidconnect']['guzzle'];
+        $configs = config('opidconnect');
 
-            $cl = new Client($config);
-
-            return new JSONFetcherAdapter($cl);
-        });
-
-        $this->app->singleton(JSONGetter::class, function ($app) {
-            return $app[JSONFetcherAdapter::class];
-        });
-
-        $this->app->singleton(JSONPoster::class, function ($app) {
-            return $app[JSONFetcherAdapter::class];
-        });
+        if (!$configs) {
+            return;
+        }
 
         $this->app->singleton(Decoder::class, function ($app) {
-            return new \Lcobucci\JWT\Parsing\Decoder();
+            return new JsonDecoder();
         });
 
         $this->app->singleton(Parser::class, function ($app) {
-            return new \Lcobucci\JWT\Parser($app[Decoder::class]);
+            return new Token\Parser($app[Decoder::class]);
         });
 
         $this->app->singleton(Validator::class, function ($app) {
@@ -99,29 +97,41 @@ class ServiceProvider extends ServiceProviderIlluminate
             return new Signer\Rsa\Sha256();
         });
 
-        $this->app->bind(KeysFetcher::class, function ($app) {
-            $config = $app['config']['opidconnect'];
+        foreach ($configs as $driver => $config) {
+            $this->app->singleton(JSONFetcherAdapter::class . '/' . $driver, function ($config) {
+                $cl = new Client($config['guzzle']);
 
-            return new KeysFetcher(
-                $app[JSONGetter::class],
-                $app['cache.store'],
-                $app[Decoder::class],
-                $config['keys']
-            );
-        });
+                return new JSONFetcherAdapter($cl);
+            });
 
-        $this->app->bind(TokenRefresher::class, function ($app) {
-            $config = $app['config']['opidconnect'];
+            $this->app->singleton(JSONGetter::class . '/' . $driver, function ($app, $driver) {
+                return $app[JSONFetcherAdapter::class . '/' . $driver];
+            });
 
-            return new TokenRefresher(
-                $app[JSONPoster::class],
-                $app[TokenStorage::class],
-                $config['client_id'],
-                $config['client_secret'],
-                $config['redirect'],
-                $config['token']
-            );
-        });
+            $this->app->singleton(JSONPoster::class . '/' . $driver, function ($app, $driver) {
+                return $app[JSONFetcherAdapter::class . '/' . $driver];
+            });
+
+            $this->app->bind(KeysFetcher::class . '/' . $driver, function ($app, $config) {
+                return new KeysFetcher(
+                    $app[JSONGetter::class . '/' . $driver],
+                    $app['cache.store'],
+                    $app[Decoder::class],
+                    $config['keys']
+                );
+            });
+
+            $this->app->bind(TokenRefresher::class . '/' . $driver, function ($app, $config) {
+                return new TokenRefresher(
+                    $app[JSONPoster::class],
+                    $app[TokenStorage::class],
+                    $config['client_id'],
+                    $config['client_secret'],
+                    $config['redirect'],
+                    $config['token']
+                );
+            });
+        }
 
         $this->app->singleton(Authenticator::class, function ($app) {
             return new NullAuthenticatorAdapter();
