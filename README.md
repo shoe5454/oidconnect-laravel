@@ -45,25 +45,32 @@ php artisan migrate
 At first you will need to add credentials for the OpenID Connect service your application utilizes.
 These credentials should be placed in your `config/opidconnect.php` configuration file.
 
+NB! Multiple drivers are supported but this is not production ready, KeysFetcher and TokenRefresher is not properly configured, it's not important for me at the moment, but you better don't use this fork, use original repository, sorry :)
+
 ```php
 <?php
 
 return [
-    'client_id' => 'CLIENT_ID_HERE',
-    'client_secret' => 'CLIENT_SECRET_HERE',
-    'redirect' => env('APP_URL') . '/auth/callback',
-    'auth' => 'https://oidc.service.com/auth',
-    'token' => 'https://oidc.service.com/token',
-    'keys' => 'https://oidc.service.com/keys',
+    'myoidc' => [
+        'client_id' => '',
+        'client_secret' => '',
+        'redirect' => env('APP_URL') . '/auth/callback',
+        'auth' => 'https://opidc.provider/auth',
+        'token' => 'https://opidc.provider/token',
+        'keys' => 'https://opidc.provider/keys',
+        'scopes' => [],
+        'guzzle' => [],
+        'response_type' => 'code id_token',
+    ],
 ];
 ```
 
 #### Endpoints
 Define redirect, callback and refresh routes:
 ```
-Route::get('/auth/redirect', '\Furdarius\OIDConnect\Http\Controllers\AuthController@redirect');
-Route::get('/auth/callback', '\Furdarius\OIDConnect\Http\Controllers\AuthController@callback');
-Route::post('/auth/refresh', '\Furdarius\OIDConnect\Http\Controllers\AuthController@refresh');
+Route::get('/auth/redirect/{driver}', '\Furdarius\OIDConnect\Http\Controllers\AuthController@redirect');
+Route::get('/auth/callback/{driver}', '\Furdarius\OIDConnect\Http\Controllers\AuthController@callback');
+Route::post('/auth/refresh/{driver}', '\Furdarius\OIDConnect\Http\Controllers\AuthController@refresh');
 ```
 
 Now, your app has auth endpoints:
