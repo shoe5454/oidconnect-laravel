@@ -7,7 +7,6 @@ use Furdarius\OIDConnect\Adapter\NullAuthenticatorAdapter;
 use Furdarius\OIDConnect\Contract\Authenticator;
 use Furdarius\OIDConnect\Contract\JSONGetter;
 use Furdarius\OIDConnect\Contract\JSONPoster;
-use Furdarius\OIDConnect\Exception\TokenRequestException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider as ServiceProviderIlluminate;
