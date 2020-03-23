@@ -100,7 +100,7 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
             throw new TokenRequestException($response['error']);
         }
 
-        $token = $response['id_token'];
+        $token = $this->request->input('id_token');
 
         $user = $this->mapUserToObject($this->getUserByToken($token));
 
