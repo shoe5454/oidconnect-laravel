@@ -9,6 +9,7 @@ use Furdarius\OIDConnect\TokenStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Laravel\Socialite\Facades\Socialite;
 use Lcobucci\JWT\Parser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
