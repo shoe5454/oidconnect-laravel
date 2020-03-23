@@ -184,4 +184,12 @@ class OIDConnectSocialiteProvider extends AbstractProvider implements ProviderIn
     {
         return $this->tokenUrl;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    protected function usesState()
+    {
+        return true;
+    }
 }
