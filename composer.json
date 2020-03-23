@@ -1,5 +1,5 @@
 {
-    "name": "ivarsju/oidconnect-laravel",
+    "name": "committeehq/oidconnect-laravel",
     "description": "OpenID Connect client library for Laravel Framework",
     "license": "MIT",
     "keywords": ["openidconnect", "oauth", "laravel"],
@@ -15,12 +15,11 @@
         {
             "name": "Pim Knops",
             "email": "pim@studiotast.com"
-        }
+        },
+        {
+            "name": "CommitteeHQ"
+            "email": "info@committeehq.com"
     ],
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/ivarsju/jwt"
-    }],
     "require": {
         "laravel/socialite": ">=3.0",
         "lcobucci/jose-parsing": "~2.1",
