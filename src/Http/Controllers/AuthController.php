@@ -22,7 +22,7 @@ class AuthController extends BaseController
     public function redirect(string $driver)
     {
         /** @var \Symfony\Component\HttpFoundation\RedirectResponse $redirectResponse */
-        $redirectResponse = \Socialite::with($driver)->stateless()->redirect();
+        $redirectResponse = Socialite::with($driver)->stateless()->redirect();
 
         return $redirectResponse;
     }
@@ -44,7 +44,7 @@ class AuthController extends BaseController
         }
 
         /** @var \Laravel\Socialite\Two\User $user */
-        $user = \Socialite::with($driver)->stateless()->user();
+        $user = Socialite::with($driver)->stateless()->user();
 
         if (!$storage->saveRefresh($user['sub'], $user['iss'], $user->refreshToken)) {
             throw new TokenStorageException("Failed to save refresh token");
