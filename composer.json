@@ -24,7 +24,7 @@
     "require": {
         "laravel/socialite": ">=3.0",
         "lcobucci/jose-parsing": "~2.1",
-        "lcobucci/jwt": "dev-typ-optional",
+        "lcobucci/jwt": "dev-master",
         "illuminate/database": ">=5.5",
         "illuminate/routing": ">=5.5"
     },
