@@ -5,7 +5,6 @@ namespace Furdarius\OIDConnect;
 use Furdarius\OIDConnect\Exception\TokenRequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\InvalidStateException;
 use Laravel\Socialite\Two\ProviderInterface;
