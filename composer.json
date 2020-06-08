@@ -24,7 +24,7 @@
     "require": {
         "laravel/socialite": ">=3.0",
         "lcobucci/jose-parsing": "~2.2",
-        "lcobucci/clock": "~1.2"
+        "lcobucci/clock": "~1.2",
         "lcobucci/jwt": "dev-master#b6d9bbf7a6c7d67f2392a6a41dddfa350207abf4",
         "illuminate/database": ">=5.5",
         "illuminate/routing": ">=5.5"
